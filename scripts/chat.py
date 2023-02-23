@@ -1,8 +1,14 @@
 import torch
 from transformers import pipeline
 import numpy as np
+from TTS.api import TTS
+from playsound import playsound
+import time
 
 classifier = pipeline("text-classification", model="bhadresh-savani/distilbert-base-uncased-emotion", return_all_scores=True)
+
+model_name = TTS.list_models()[0]
+tts = TTS(model_name) # optional parameters here in case of custom model.
 
 # chizuru_bot = torch.from_pretrained("path/to/model")
 
@@ -89,6 +95,11 @@ for step in range(10):
         emotion = get_most_likely_emotion(classifier(output)) # Gets an emotion to go with the output. When GUI implemented, Chizuru will change expression. Code that while the model is training.
         print("【Chizuru】: {}".format(output))
         print("Expression is: {}".format(expression(emotion)))
+        t1 = time.time()
+        tts.tts_to_file(text=output,speaker=tts.speakers[0],language=tts.languages[0],file_path="output.wav")
+        playsound("output.wav")
+        print("Time elapsed to play sound: {}".format(time.time() - t1))
+
 
     print(chat_history_ids) # Debug, view chat history tokens
 
