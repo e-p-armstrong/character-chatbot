@@ -96,7 +96,13 @@ for step in range(10):
         print("【Chizuru】: {}".format(output))
         print("Expression is: {}".format(expression(emotion)))
         t1 = time.time()
-        tts.tts_to_file(text=output,speaker=tts.speakers[0],language=tts.languages[0],file_path="output.wav")
+        tts.tts_to_file(text=output,
+                        speaker=tts.speakers[0],
+                        language=tts.languages[0],
+                        file_path="output.wav",
+                        #speaker_wav="pathtowav.wav",
+                        #language="jp"
+                        )
         playsound("output.wav")
         print("Time elapsed to play sound: {}".format(time.time() - t1))
 
