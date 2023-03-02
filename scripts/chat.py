@@ -4,15 +4,24 @@ import numpy as np
 from TTS.api import TTS
 from playsound import playsound
 import time
+import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 classifier = pipeline("text-classification", model="bhadresh-savani/distilbert-base-uncased-emotion", return_all_scores=True)
 
 model_name = TTS.list_models()[0]
 tts = TTS(model_name) # optional parameters here in case of custom model.
 
+output_dir = 'output'
+model_type = 'gpt2'
+model_name_or_path = 'microsoft/DialoGPT-small'
+config_name = 'microsoft/DialoGPT-small'
+tokenizer_name = 'microsoft/DialoGPT-small'
+cache_dir = 'cached'
+
 # chizuru_bot = torch.from_pretrained("path/to/model")
 
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, AutoConfig, AutoModelWithLMHead
 import torch
 import transformers
 
@@ -41,18 +50,29 @@ def expression(emotion):
         return "(⚆ᗝ⚆)"
 
 
-tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium", padding_side = 'left')
-model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium") # Will load from file once it's trained.
+# tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium", padding_side = 'left')
+# model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium") # Will load from file once it's trained.
+config = AutoConfig.from_pretrained(config_name, cache_dir=cache_dir)
+tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, cache_dir=cache_dir)
+model = AutoModelForCausalLM.from_pretrained( # LM head, recall it from Andrej Karpathy's nanoGPT tutorial. I think it either refers to how transformers/masking/token probabilities are calculated, OR the linear models that help bend inputs/outputs into certain shapes.
+        model_name_or_path,
+        from_tf=False,
+        config=config,
+        cache_dir=cache_dir,
+    )
+
+# device = torch.device("cuda")
+# model.to(device)
 
 def model_is_broken(output):
     if (output == ""): # This would be a machine learning model. Right now it's just a stub.
         return True
     return False
 
-# Let's chat for 5 lines
+
 for step in range(10):
     # encode the new user input, add the eos_token and return a tensor in Pytorch
-    new_user_input_ids = tokenizer.encode(input(">> User: ") + tokenizer.eos_token, return_tensors='pt')
+    new_user_input_ids = tokenizer.encode(input("【 User 】: ") + tokenizer.eos_token, return_tensors='pt')
 
 
     # store history before input and output in a temp variable, incase model breaks
@@ -104,10 +124,10 @@ for step in range(10):
                         #language="jp"
                         )
         playsound("output.wav")
-        print("Time elapsed to play sound: {}".format(time.time() - t1))
+        # print("Time elapsed to play sound: {}".format(time.time() - t1))
 
 
-    print(chat_history_ids) # Debug, view chat history tokens
+    # print(chat_history_ids) # Debug, view chat history tokens
 
 
 # Idea: feed the AI information about itself by having a few statements "your name is X, your occupation is Y" before the user can interact

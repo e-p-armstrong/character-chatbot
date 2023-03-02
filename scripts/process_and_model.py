@@ -107,7 +107,7 @@ def make_strings(strlst, tokenizer):
 
 script_tokenized = make_strings(script,tokenizer)
 
-print(script_tokenized[:2])
+# print(script_tokenized[:2])
 
 
 ###
