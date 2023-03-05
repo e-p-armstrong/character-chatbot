@@ -15,9 +15,9 @@ classifier = pipeline("text-classification", model="bhadresh-savani/distilbert-b
 
 output_dir = 'output'
 model_type = 'gpt2'
-model_name_or_path = 'microsoft/DialoGPT-small'
-config_name = 'microsoft/DialoGPT-small'
-tokenizer_name = 'microsoft/DialoGPT-small'
+model_name_or_path = 'microsoft/DialoGPT-medium'
+config_name = 'microsoft/DialoGPT-medium'
+tokenizer_name = 'microsoft/DialoGPT-medium'
 cache_dir = 'cached'
 
 # chizuru_bot = torch.from_pretrained("path/to/model")

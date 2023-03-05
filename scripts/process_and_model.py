@@ -53,7 +53,6 @@ def makecols(str):
     charname_results = charname_regex.search(str)
     dialogue_results = dialogue_regex.search(str)
     if charname_results is None:
-        print("\n\nThis guard fired!")
         return ['MONOLOGUE',dialogue_results]
     try: 
         return [charname_results.group(0)[1:][:-1],dialogue_results.group(0)[1:][:-1]]
@@ -62,10 +61,10 @@ def makecols(str):
         return ['ERROR!','']
 
 
-# def not_monologue(tup):
-#     if (tup[0] == 'MONOLOGUE'):
-#         return False
-#     return True
+def not_monologue(tup):
+    if (tup[0] == 'MONOLOGUE'):
+        return False
+    return True
         
 def chizuru(tup):
     if (tup[0] == 'Chizuru'):
@@ -77,7 +76,7 @@ def chizuru(tup):
 
 script = open('muvluv-chizururoute-script.txt').read().replace('\n','').replace('\x05','').split('')
 script = list(map(makecols,script))
-script = list(filter(chizuru,script))
+script = list(filter(not_monologue,script)) # The reason behind the incoherent dialogue is likely the fact that the model only has access to half the conversation. I can fix that by moving the filtering to the context-making function.
 print(len(script))
 SystemExit(0)
 # Match character name: (【.+?】)
@@ -107,14 +106,18 @@ def make_strings(strlst, tokenizer):
         prev = i - n - 1 # we additionally subtract 1, so row will contain current response and 7 previous responses  
         # print("prev! \n")
         # print(prev)
-        for j in range(i, prev, -1):
-            # print(strlst[j][1])
-            row.append(strlst[j][1])
-        # Encode each string in row with tokenizer and concatenate together to make a single string with context and response
-        conv = list(reversed([tokenizer.encode(x) + [tokenizer.eos_token_id] for x in row]))
-        conv = flatten(conv)
-        # print(conv)
-        context.append(conv)
+        print(strlst[i][0])
+        print(strlst[i][1])
+        print("\n\n")
+        if (strlst[i][0] == "Chizuru"): # This is the solution to the model only having half the conversation. It only responds as Chizuru, but gets used to taking the whole conversation as input.
+            for j in range(i, prev, -1):
+                # print(strlst[j][1])
+                row.append(strlst[j][1])
+            # Encode each string in row with tokenizer and concatenate together to make a single string with context and response
+            conv = list(reversed([tokenizer.encode(x) + [tokenizer.eos_token_id] for x in row])) # The problem here was that I wasn't filtering out the None types, which weren't strings and couldn't be tokenized.
+            conv = flatten(conv)
+            # print(conv)
+            context.append(conv)
     return context
 
 script_tokenized = make_strings(script,tokenizer)
@@ -150,17 +153,17 @@ class Args():
     def __init__(self):
         self.output_dir = 'output'
         self.model_type = 'gpt2'
-        self.model_name_or_path = 'microsoft/DialoGPT-small'
-        self.config_name = 'microsoft/DialoGPT-small'
-        self.tokenizer_name = 'microsoft/DialoGPT-small'
+        self.model_name_or_path = 'microsoft/DialoGPT-medium'
+        self.config_name = 'microsoft/DialoGPT-medium'
+        self.tokenizer_name = 'microsoft/DialoGPT-medium'
         self.cache_dir = 'cached'
         self.block_size = 512
         self.do_train = True
         self.do_eval = True
         self.evaluate_during_training = False
-        self.per_gpu_train_batch_size = 4
-        self.per_gpu_eval_batch_size = 4
-        self.gradient_accumulation_steps = 4
+        self.per_gpu_train_batch_size = 1
+        self.per_gpu_eval_batch_size = 1
+        self.gradient_accumulation_steps = 40
         self.learning_rate = 5e-5
         self.weight_decay = 0.0
         self.adam_epsilon = 1e-8#Interesting that the adam epsilon is different than the learning rate.
