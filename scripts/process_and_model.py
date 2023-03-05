@@ -53,26 +53,33 @@ def makecols(str):
     charname_results = charname_regex.search(str)
     dialogue_results = dialogue_regex.search(str)
     if charname_results is None:
+        print("\n\nThis guard fired!")
         return ['MONOLOGUE',dialogue_results]
-    return [charname_results.group(0)[1:][:-1],dialogue_results.group(0)[1:][:-1]]
+    try: 
+        return [charname_results.group(0)[1:][:-1],dialogue_results.group(0)[1:][:-1]]
+    except:
+        print(f"This is the charname_results: {charname_results}.\nAnd this is the dialogue: {dialogue_results}")
+        return ['ERROR!','']
 
 
-def not_monologue(tup):
-    if (tup[0] == 'MONOLOGUE'):
-        return False
-    return True
+# def not_monologue(tup):
+#     if (tup[0] == 'MONOLOGUE'):
+#         return False
+#     return True
         
-
+def chizuru(tup):
+    if (tup[0] == 'Chizuru'):
+        return True
+    return False
 
 # str = "【Class Rep】「Not her! You, Shirogane-kun!! You're the one who always bursts in here at the last minute every day, kicking up a huge racket...*sigh*...」"
 # print([charname_regex.search(str).group(0),dialogue_regex.search(str).group(0)])
 
-script = list(map(makecols,open('muvluv-chizururoute-script.txt').read().replace('\n','').replace('\x05','').split('')))
-print("\n\n\n\n\n\n\n\n\n")
-print(script[0])
+script = open('muvluv-chizururoute-script.txt').read().replace('\n','').replace('\x05','').split('')
+script = list(map(makecols,script))
+script = list(filter(chizuru,script))
 print(len(script))
-print("\n\n\n\n\n\n\n\n\n")
-script = list(filter(not_monologue,script))
+SystemExit(0)
 # Match character name: (【.+?】)
 # Match dialogue:       (「.+?」)
 
@@ -158,7 +165,7 @@ class Args():
         self.weight_decay = 0.0
         self.adam_epsilon = 1e-8#Interesting that the adam epsilon is different than the learning rate.
         self.max_grad_norm = 1.0
-        self.num_train_epochs = 20
+        self.num_train_epochs = 3
         self.max_steps = -1
         self.warmup_steps = 0
         self.logging_steps = 1000
