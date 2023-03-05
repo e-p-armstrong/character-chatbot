@@ -109,7 +109,7 @@ def make_strings(strlst, tokenizer):
         print(strlst[i][0])
         print(strlst[i][1])
         print("\n\n")
-        if (strlst[i][0] == "Chizuru"): # This is the solution to the model only having half the conversation. It only responds as Chizuru, but gets used to taking the whole conversation as input.
+        if (strlst[i][0] == "Chizuru"): # This is the solution to the model only having half the conversation. It only responds as Chizuru, but gets used to taking the whole conversation as input. IN THEORY
             for j in range(i, prev, -1):
                 # print(strlst[j][1])
                 row.append(strlst[j][1])
@@ -168,7 +168,7 @@ class Args():
         self.weight_decay = 0.0
         self.adam_epsilon = 1e-8#Interesting that the adam epsilon is different than the learning rate.
         self.max_grad_norm = 1.0
-        self.num_train_epochs = 3
+        self.num_train_epochs = 5
         self.max_steps = -1
         self.warmup_steps = 0
         self.logging_steps = 1000
