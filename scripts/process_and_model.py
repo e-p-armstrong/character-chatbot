@@ -63,10 +63,15 @@ def not_monologue(tup):
     return True
         
 
+
 # str = "【Class Rep】「Not her! You, Shirogane-kun!! You're the one who always bursts in here at the last minute every day, kicking up a huge racket...*sigh*...」"
 # print([charname_regex.search(str).group(0),dialogue_regex.search(str).group(0)])
 
 script = list(map(makecols,open('muvluv-chizururoute-script.txt').read().replace('\n','').replace('\x05','').split('')))
+print("\n\n\n\n\n\n\n\n\n")
+print(script[0])
+print(len(script))
+print("\n\n\n\n\n\n\n\n\n")
 script = list(filter(not_monologue,script))
 # Match character name: (【.+?】)
 # Match dialogue:       (「.+?」)
@@ -138,9 +143,9 @@ class Args():
     def __init__(self):
         self.output_dir = 'output'
         self.model_type = 'gpt2'
-        self.model_name_or_path = 'microsoft/DialoGPT-medium'
-        self.config_name = 'microsoft/DialoGPT-medium'
-        self.tokenizer_name = 'microsoft/DialoGPT-medium'
+        self.model_name_or_path = 'microsoft/DialoGPT-small'
+        self.config_name = 'microsoft/DialoGPT-small'
+        self.tokenizer_name = 'microsoft/DialoGPT-small'
         self.cache_dir = 'cached'
         self.block_size = 512
         self.do_train = True
@@ -148,12 +153,12 @@ class Args():
         self.evaluate_during_training = False
         self.per_gpu_train_batch_size = 4
         self.per_gpu_eval_batch_size = 4
-        self.gradient_accumulation_steps = 1
+        self.gradient_accumulation_steps = 4
         self.learning_rate = 5e-5
         self.weight_decay = 0.0
         self.adam_epsilon = 1e-8#Interesting that the adam epsilon is different than the learning rate.
         self.max_grad_norm = 1.0
-        self.num_train_epochs = 50
+        self.num_train_epochs = 20
         self.max_steps = -1
         self.warmup_steps = 0
         self.logging_steps = 1000

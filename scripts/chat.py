@@ -1,7 +1,7 @@
 import torch
 from transformers import pipeline
 import numpy as np
-from TTS.api import TTS
+# from TTS.api import TTS
 from playsound import playsound
 import time
 import os
@@ -10,8 +10,8 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 classifier = pipeline("text-classification", model="bhadresh-savani/distilbert-base-uncased-emotion", return_all_scores=True)
 
-model_name = TTS.list_models()[0]
-tts = TTS(model_name) # optional parameters here in case of custom model.
+# model_name = TTS.list_models()[0]
+# tts = TTS(model_name) # optional parameters here in case of custom model.
 
 output_dir = 'output'
 model_type = 'gpt2'
@@ -56,10 +56,7 @@ def expression(emotion):
 config = AutoConfig.from_pretrained(config_name, cache_dir=cache_dir)
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, cache_dir=cache_dir)
 model = AutoModelForCausalLM.from_pretrained( # LM head, recall it from Andrej Karpathy's nanoGPT tutorial. I think it either refers to how transformers/masking/token probabilities are calculated, OR the linear models that help bend inputs/outputs into certain shapes.
-        model_name_or_path,
-        from_tf=False,
-        config=config,
-        cache_dir=cache_dir,
+    'output'
     )
 
 # device = torch.device("cuda")
@@ -120,15 +117,15 @@ for step in range(10):
         emotion = get_most_likely_emotion(classifier(output)) # Gets an emotion to go with the output. When GUI implemented, Chizuru will change expression. Code that while the model is training.
         print("【Chizuru】: {}".format(output))
         print("Expression is: {}".format(expression(emotion)))
-        t1 = time.time()
-        tts.tts_to_file(text=output,
-                        speaker=tts.speakers[0],
-                        language=tts.languages[0],
-                        file_path="output.wav",
-                        #speaker_wav="pathtowav.wav",
-                        #language="jp"
-                        )
-        playsound("output.wav")
+        # t1 = time.time()
+        # tts.tts_to_file(text=output,
+        #                 speaker=tts.speakers[0],
+        #                 language=tts.languages[0],
+        #                 file_path="output.wav",
+        #                 #speaker_wav="pathtowav.wav",
+        #                 #language="jp"
+        #                 )
+        # playsound("output.wav")
         # print("Time elapsed to play sound: {}".format(time.time() - t1))
 
 
