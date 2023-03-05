@@ -5,6 +5,7 @@ from TTS.api import TTS
 from playsound import playsound
 import time
 import os
+import tkinter
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 classifier = pipeline("text-classification", model="bhadresh-savani/distilbert-base-uncased-emotion", return_all_scores=True)
@@ -68,6 +69,10 @@ def model_is_broken(output):
     if (output == ""): # This would be a machine learning model. Right now it's just a stub.
         return True
     return False
+
+window = tkinter.Tk()
+window.title("Chat!")
+
 
 
 for step in range(10):
