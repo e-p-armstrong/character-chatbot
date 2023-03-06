@@ -168,7 +168,7 @@ class Args():
         self.weight_decay = 0.0
         self.adam_epsilon = 1e-8#Interesting that the adam epsilon is different than the learning rate.
         self.max_grad_norm = 1.0
-        self.num_train_epochs = 5
+        self.num_train_epochs = 7
         self.max_steps = -1
         self.warmup_steps = 0
         self.logging_steps = 1000
