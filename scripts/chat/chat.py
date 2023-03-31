@@ -15,9 +15,9 @@ classifier = pipeline("text-classification", model="bhadresh-savani/distilbert-b
 
 output_dir = 'output'
 model_type = 'gpt2'
-model_name_or_path = 'microsoft/DialoGPT-medium'
-config_name = 'microsoft/DialoGPT-medium'
-tokenizer_name = 'microsoft/DialoGPT-medium'
+model_name_or_path = 'microsoft/DialoGPT-large'
+config_name = 'microsoft/DialoGPT-large'
+tokenizer_name = 'microsoft/DialoGPT-large'
 cache_dir = 'cached'
 
 # chizuru_bot = torch.from_pretrained("path/to/model")
@@ -55,8 +55,8 @@ def get_most_likely_emotion(emotion_array):
 #         return "(⚆ᗝ⚆)"
 
 
-# tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium", padding_side = 'left')
-# model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium") # Will load from file once it's trained.
+# tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-large", padding_side = 'left')
+# model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-large") # Will load from file once it's trained.
 config = AutoConfig.from_pretrained(config_name, cache_dir=cache_dir)
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, cache_dir=cache_dir)
 model = AutoModelForCausalLM.from_pretrained( # LM head, recall it from Andrej Karpathy's nanoGPT tutorial. I think it either refers to how transformers/masking/token probabilities are calculated, OR the linear models that help bend inputs/outputs into certain shapes.

@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import re
 from transformers import AutoModelForCausalLM, AutoTokenizer
-tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-small", padding_side = 'left')
+tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-large", padding_side = 'left')
 from pathlib import Path
 # model imports below here, mostly. Adapted from https://github.com/ncoop57/i-am-a-nerd/blob/master/_notebooks/2020-05-12-chatbot-part-1.ipynb
 import glob
@@ -78,7 +78,6 @@ script = open('muvluv-chizururoute-script.txt').read().replace('\n','').replace(
 script = list(map(makecols,script))
 script = list(filter(not_monologue,script)) # The reason behind the incoherent dialogue is likely the fact that the model only has access to half the conversation. I can fix that by moving the filtering to the context-making function.
 print(len(script))
-SystemExit(0)
 # Match character name: (【.+?】)
 # Match dialogue:       (「.+?」)
 
@@ -106,8 +105,8 @@ def make_strings(strlst, tokenizer):
         prev = i - n - 1 # we additionally subtract 1, so row will contain current response and 7 previous responses  
         # print("prev! \n")
         # print(prev)
-        print(strlst[i][0])
-        print(strlst[i][1])
+        # print(strlst[i][0])
+        # print(strlst[i][1])
         print("\n\n")
         if (strlst[i][0] == "Chizuru"): # This is the solution to the model only having half the conversation. It only responds as Chizuru, but gets used to taking the whole conversation as input. IN THEORY
             for j in range(i, prev, -1):
@@ -153,9 +152,9 @@ class Args():
     def __init__(self):
         self.output_dir = 'output'
         self.model_type = 'gpt2'
-        self.model_name_or_path = 'microsoft/DialoGPT-medium'
-        self.config_name = 'microsoft/DialoGPT-medium'
-        self.tokenizer_name = 'microsoft/DialoGPT-medium'
+        self.model_name_or_path = 'microsoft/DialoGPT-large'
+        self.config_name = 'microsoft/DialoGPT-large'
+        self.tokenizer_name = 'microsoft/DialoGPT-large'
         self.cache_dir = 'cached'
         self.block_size = 512
         self.do_train = True
@@ -163,7 +162,7 @@ class Args():
         self.evaluate_during_training = False
         self.per_gpu_train_batch_size = 1
         self.per_gpu_eval_batch_size = 1
-        self.gradient_accumulation_steps = 40
+        self.gradient_accumulation_steps = 1000
         self.learning_rate = 5e-5
         self.weight_decay = 0.0
         self.adam_epsilon = 1e-8#Interesting that the adam epsilon is different than the learning rate.
