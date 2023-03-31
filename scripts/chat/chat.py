@@ -101,8 +101,8 @@ def generate(input):
     # BPE is byte-pair encoding. The compression mapping equivalence thing. I know what that is. If I forget, look it up.
     chat_history_ids = model.generate(bot_input_ids, max_length=1000, 
     pad_token_id=tokenizer.eos_token_id, 
-    # no_repeat_ngram_size=3,
-    # num_beams=10,
+    no_repeat_ngram_size=3,
+    num_beams=10,
     top_k = 4,
     penalty_alpha=0.6,
     # do_sample = True,
