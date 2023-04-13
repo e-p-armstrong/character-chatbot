@@ -7,3 +7,4 @@ This is a chatbot that uses a fine-tuned version of Microsoft's DialoGPT model t
 
 The trained model parameters themselves are too large to host here without LFS. You can train the model yourself by running process_and_model.py. You then chat with it by moving the "output" directory inside the "chat" folder (in scripts) and running "chat.py."
 
+### Note: these files are out-of-date; GitHub is broken on my Linux machine for some reason and due to finals season I have yet to fix it. This will be done at least by May 3rd 2023
