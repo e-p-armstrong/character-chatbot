@@ -1,10 +1,7 @@
-# Using DialoGPT and the script of a visual novel to replicate a character as a chatbot
+# Deprecated
 
-A chatbot, complete with a gui, that somewhat emulates the speech patterns of Sakaki Chizuru from the Muv Luv series of visual novels. 
+I just made a version of this that actually works. I made this repo when I was screwing around; now I have an actual model (Llama2 merge) finetuned on a dataset that has been formatted with a roleplay prompt, so that it actually produces sensible outputs.
 
-What this is:
-This is a chatbot that uses a fine-tuned version of Microsoft's DialoGPT model to produce outputs. It also uses a sentiment analysis model from Huggingface to detect the emotion of a response and set an expression on an image of the character represented in the GUI accordingly. I ripped most of the script from Muv Luv Extra's Chizuru route using Textractor (https://github.com/Artikash/Textractor) then trained the model to reply to input like it's Chizuru. Results are mixed at this stage: the chatbot can speak sensibly for a time, and also occasionally speaks like Chizuru, but lacks any knowledge of events that the character would know about and can also be VERY easily confused. These problems are not neccessarily unique to this fine-tuned version; DialoGPT, in its default state, can get easily confused too. I intend to transition this repo to using a different model (like GODEL) ASAP, to improve quality.
+Do not judge me by this thing here
 
-The trained model parameters themselves are too large to host here without LFS. You can train the model yourself by running process_and_model.py. You then chat with it by moving the "output" directory inside the "chat" folder (in scripts) and running "chat.py."
-
-### Note: these files are out-of-date; GitHub is broken on my Linux machine for some reason and due to finals season I have yet to fix it. This will be done at least by May 3rd 2023
+I'll release the quant and code of the better thing when I have time in a week hopefully
