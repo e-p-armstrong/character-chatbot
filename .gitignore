@@ -1,7 +1,7 @@
 images/
 .DS_Store
-scripts/output/
-scripts/runs/
+# scripts/output/
+# scripts/runs/
 scripts/cached/
 scripts/working-medium/
 scripts/working_model/
